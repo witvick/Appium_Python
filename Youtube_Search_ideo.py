@@ -1,10 +1,13 @@
-from appium import webdriver
-from typing import Any, Dict
-from appium.options.android import UiAutomator2Options
 import time
-
+from typing import Any, Dict
+from selenium.webdriver import ActionChains
+from selenium.webdriver.common.actions import interaction
+from selenium.webdriver.common.actions.action_builder import ActionBuilder
+from selenium.webdriver.common.actions.pointer_input import PointerInput
+from selenium.webdriver.common.action_chains import ActionChains
+from appium import webdriver
+from appium.options.android import UiAutomator2Options
 from appium.webdriver.common.appiumby import AppiumBy
-from selenium.webdriver import Keys
 
 # Define the desired capabilities
 cap: Dict[str, Any] = {
@@ -25,53 +28,59 @@ options.load_capabilities(cap)
 url = 'http://127.0.0.1:4723'
 # Initialize the driver
 driver = webdriver.Remote(url, options=options)
+driver.implicitly_wait(10)
 
-try:
+got_it = driver.find_element(by=AppiumBy.XPATH, value='//android.widget.Button[@text="Got it"]')
 
-    got_it = driver.find_element(by=AppiumBy.XPATH, value='//android.widget.Button[@text="Got it"]')
-    time.sleep(5)
-    got_it.click()
-    Allow=driver.find_element(by=AppiumBy.XPATH, value='// android.widget.Button[@text="Allow"]')
-    time.sleep(5)
-    Allow.click()
-    print("Permission granted")
-    #scroll=driver.find_element(AppiumBy.ANDROID_UIAUTOMATOR,'new UiScrollable(new UiSelector().scrollable(true)).setAsVerticalList().scrollToEnd(5)')
-    time.sleep(5)
-    search = driver.find_element(by=AppiumBy.XPATH,value='//android.widget.ImageView[@content-desc="Search"]')
-    time.sleep(5)
-    search.click()
-    search2 = driver.find_element(by=AppiumBy.XPATH, value='//android.widget.EditText[@resource-id="com.google.android.youtube:id/search_edit_text"]')
-    search2.click()
-    search2.send_keys("Mr Funracing")
+got_it.click()
+Allow = driver.find_element(by=AppiumBy.XPATH, value='// android.widget.Button[@text="Allow"]')
 
-    driver.press_keycode(66)  # 66 is the key code for Enter
-    time.sleep(5)
-    channel = driver.find_element(
-        AppiumBy.ANDROID_UIAUTOMATOR,'new UiSelector().description("Go to channel").instance(0)')
-    time.sleep(5)
-    channel.click()
-    print("F")
-    videos_croup = driver.find_element(by=AppiumBy.XPATH, value='//android.widget.Button[@text="VIDEOS"]')
-    time.sleep(10)
-    videos_croup.click()
-    print("B")
+Allow.click()
+print("Permission granted")
+# scroll=driver.find_element(AppiumBy.ANDROID_UIAUTOMATOR,'new UiScrollable(new UiSelector().scrollable(true)).setAsVerticalList().scrollToEnd(5)')
 
-    videos_1 = driver.find_element(by=AppiumBy.XPATH, value='//android.view.ViewGroup[@content-desc="Oldest"]')
-    time.sleep(5)
-    videos_1.click()
-    print("C")
-    time.sleep(5)
+search = driver.find_element(by=AppiumBy.XPATH, value='//android.widget.ImageView[@content-desc="Search"]')
 
-    channel_ideo = driver.find_element(
-    AppiumBy.ANDROID_UIAUTOMATOR, 'new UiSelector().description("SOUNDCHECK Aprilia RS 125  Fly By – 2 minutes, 16 seconds – Go to channel – MrFunRacing - 5K views - 13 years ago – play video")')
-    time.sleep(10)
-    channel_ideo.click()
+search.click()
+search2 = driver.find_element(by=AppiumBy.XPATH,
+                              value='//android.widget.EditText[@resource-id="com.google.android.youtube:id/search_edit_text"]')
+search2.click()
+search2.send_keys("Mr Funracing")
 
-    time.sleep(100)
+driver.press_keycode(66)  # 66 is the key code for Enter
+
+channel = driver.find_element(
+    AppiumBy.ANDROID_UIAUTOMATOR, 'new UiSelector().description("Go to channel").instance(0)')
+
+channel.click()
+print("F")
+videos_croup = driver.find_element(by=AppiumBy.XPATH, value='//android.widget.Button[@content-desc="Videos"]')
+
+videos_croup.click()
+print("B")
+
+videos_1 = driver.find_element(by=AppiumBy.XPATH, value='//android.view.ViewGroup[@content-desc="Oldest"]')
+
+videos_1.click()
+print("C")
 
 
+# Find the element using UiSelector
+element = driver.find_element(
+    AppiumBy.ANDROID_UIAUTOMATOR,
+    'new UiSelector().description("SOUNDCHECK Aprilia RS 125  Fly By – 2 minutes, 16 seconds – Go to channel – MrFunRacing - 5K views - 13 years ago – play video")'
+)
 
+# Perform long press action
+actions = ActionChains(driver)
+actions.click_and_hold(element).pause(5).release().perform()
+print("Released perform")
 
+download_1 = driver.find_element(by=AppiumBy.XPATH, value='//android.widget.LinearLayout[@content-desc="Download video"]')
 
-finally:
-    None
+download_1.click()
+download_2 = driver.find_element(
+    AppiumBy.ANDROID_UIAUTOMATOR,'new UiSelector().className("android.view.ViewGroup").instance(7)')
+
+download_2.click()
+time.sleep(800)
