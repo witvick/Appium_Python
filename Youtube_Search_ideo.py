@@ -16,7 +16,8 @@ cap: Dict[str, Any] = {
     "automationName": "UiAutomator2",
     "deviceName": "R9WX705LKLH",
     "appPackage": "com.google.android.youtube",
-    "appActivity": "com.google.android.apps.youtube.app.WatchWhileActivity"
+    "appActivity": "com.google.android.apps.youtube.app.WatchWhileActivity",
+    "autoGrantPermissions": True
 
 }
 
@@ -30,12 +31,12 @@ url = 'http://127.0.0.1:4723'
 driver = webdriver.Remote(url, options=options)
 driver.implicitly_wait(10)
 
-got_it = driver.find_element(by=AppiumBy.XPATH, value='//android.widget.Button[@text="Got it"]')
+# got_it = driver.find_element(by=AppiumBy.XPATH, value='//android.widget.Button[@text="Got it"]')
+#
+# got_it.click()
+# Allow = driver.find_element(by=AppiumBy.XPATH, value='// android.widget.Button[@text="Allow"]')
 
-got_it.click()
-Allow = driver.find_element(by=AppiumBy.XPATH, value='// android.widget.Button[@text="Allow"]')
-
-Allow.click()
+# Allow.click()
 print("Permission granted")
 # scroll=driver.find_element(AppiumBy.ANDROID_UIAUTOMATOR,'new UiScrollable(new UiSelector().scrollable(true)).setAsVerticalList().scrollToEnd(5)')
 

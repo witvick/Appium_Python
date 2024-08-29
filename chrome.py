@@ -41,21 +41,42 @@ try:
     time.sleep(5)
     driver.press_keycode(66)  # 66 is the key code for Enter
 
+    # Print available contexts again
+    contexts = driver.contexts
+    print("Contexts after clicking link:", contexts)
+
+    # Add a wait to ensure the WebView is fully loaded
+    time.sleep(10)
+
+    # Determine the WebView context name
+    webview_context = 'WEBVIEW_chrome'  # Ensure this matches your actual context name
+    if webview_context in contexts:
+        try:
+            driver.switch_to.context(webview_context)
+            print(f"Successfully switched to context: {webview_context}")
+
+            # Print current context to confirm switch
+            current_context = driver.current_context
+            print(f"Current context after switch: {current_context}")
+
+            time.sleep(10)
+            driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+            print("Scrolled to the end of the WebView")
+
+            print("Scrolled to the end of the WebView")
+
+        except Exception as e:
+            print(f"Error while switching to WebView context or performing actions: {e}")
+    else:
+        print(f"Context {webview_context} not found")
+
     time.sleep(5)
     print("youtube Opened")
 
 
-
     time.sleep(5)
 
 
-
-
-    # Print confirmation message
-
-
-
-    # Add any additional test steps if needed here
 
 finally:
     # End the session

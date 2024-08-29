@@ -4,8 +4,13 @@ from appium.options.android import UiAutomator2Options
 import time
 
 from appium.webdriver.common.appiumby import AppiumBy
-from selenium.webdriver import Keys
 
+from appium.webdriver.appium_service import AppiumService
+
+# Step 2 : Create object for Appium Service class
+appium_service = AppiumService()
+
+appium_service.start()
 # Define the desired capabilities
 cap: Dict[str, Any] = {
     "platformName": "Android",
@@ -25,6 +30,8 @@ options.load_capabilities(cap)
 url = 'http://127.0.0.1:4723'
 # Initialize the driver
 driver = webdriver.Remote(url, options=options)
+
+print(driver.is_locked())
 
 try:
 
@@ -51,7 +58,13 @@ try:
 
 
 
+
 finally:
+    print(driver.current_package)
+    print(driver.current_activity)
+    print(driver.current_context)
+    print(driver.orientation)
     # End the session
     if driver is not None:
-        driver.quit()
+        appium_service.stop()
+
